@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${cwd}/countdown-solver",
+            "args":[],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Make Program",
+            "postDebugTask": "Delete Files",
+        }
+    ]
+}
