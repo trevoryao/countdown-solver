@@ -1,7 +1,8 @@
 CXX = clang++
-CXXFLAGS = -std=c++14 -Wall -MMD
+CXXFLAGS = -std=c++14 -Wall -MMD -g
 EXEC = countdown-solver
-OBJECTS = src/countdown-solver.o expression-node.cc
+OBJECTS = src/countdown-solver.o src/utils.o src/expression-node.o src/expression.o \
+src/int-node.o src/op-node.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}

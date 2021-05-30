@@ -5,16 +5,15 @@
 
 namespace Countdown {
 class ExpressionNode {
-private:
-    char op;
-    int n;
+protected:
     std::unique_ptr<ExpressionNode> left;
     std::unique_ptr<ExpressionNode> right;
 public:
-    ExpressionNode(char op, int n);
-    ExpressionNode(char op, int n, std::unique_ptr<ExpressionNode> left, std::unique_ptr<ExpressionNode> right);
+    ExpressionNode(std::unique_ptr<ExpressionNode> left, std::unique_ptr<ExpressionNode> right);
 
-    int evaluate();
+    virtual ~ExpressionNode();
+
+    virtual int evaluate() = 0;
 };
 }
 
