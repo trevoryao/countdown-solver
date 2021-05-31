@@ -20,8 +20,6 @@ Problem::Problem(const vector<int> &numbers, int target, Config config) :
 }
 
 int Problem::solve(ostream &os) {
-    // vector<thread> threads;
-    // vector<promise<int>> promises;
     vector<future<int>> futures;
 
     for (int k = 1; k <= numbers.size(); ++k) {
@@ -44,7 +42,6 @@ int Problem::solve_k(ostream &os, int k) {
     vector<int> thread_numbs{numbers};
 
     do {
-        // something with first k numbers
         // generate k - 1 operators
         Generator gen{ops, static_cast<size_t>(k - 1)};
         do {
