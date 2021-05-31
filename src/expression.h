@@ -2,6 +2,7 @@
 #define __EXPRESSION_H__
 
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <list>
 #include <memory>
@@ -21,7 +22,10 @@ public:
     template<class NumsIt, class OpsIt> // assuming bidirectional
     Expression(const NumsIt nums_begin, const NumsIt nums_end, const OpsIt ops_begin, const OpsIt ops_end);
 
-    int evaluate();
+    bool is_solution(int target);
+
+    std::ostream &output_pretty(std::ostream &out) const;
+    std::ostream &output_json(std::ostream &out) const;
 };
 
 template<class NumsIt, class OpsIt>
@@ -42,7 +46,6 @@ Expression::Expression(const NumsIt nums_begin, const NumsIt nums_end,
         int nums_dis = std::distance(nums.begin(), nums_it);
         int ops_dis = std::distance(ops.begin(), ops_it);
         if (*ops_it == '*' || *ops_it == '/') {
-            // create node between *ops_it and the element in the same pos in nums + 1
             auto nums_right_it = nums_it;
             ++nums_right_it;
             

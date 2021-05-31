@@ -18,4 +18,22 @@ int OpNode::evaluate() {
     }
     return 0; // to remove the warnings
 }
+
+ostream &OpNode::output_pretty(ostream &out) const {
+    out << "(";
+    left->output_pretty(out);
+    out << " " << op << " ";
+    right->output_pretty(out);
+    out << ")";
+    return out;
+}
+
+ostream &OpNode::output_json(ostream &out) const {
+    out << "(";
+    left->output_pretty(out);
+    out << op;
+    right->output_pretty(out);
+    out << ")";
+    return out;
+}
 }

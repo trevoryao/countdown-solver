@@ -1,6 +1,7 @@
 #ifndef __EXPRESSION_NODE_H__
 #define __EXPRESSION_NODE_H__
 
+#include <iostream>
 #include <memory>
 
 namespace Countdown {
@@ -14,6 +15,9 @@ public:
     virtual ~ExpressionNode();
 
     virtual int evaluate() = 0;
+
+    virtual std::ostream &output_pretty(std::ostream &out) const = 0;
+    virtual std::ostream &output_json(std::ostream &out) const = 0;
 };
 }
 
