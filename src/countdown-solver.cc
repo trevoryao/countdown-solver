@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
         nums = vm["numbers"].as<vector<int>>();
 
         if (nums.size() != 5) {
-            cerr << "Incorrect ammount of numbers entered! There must be 5." << endl;
+            cerr << "Incorrect amount of numbers entered! There must be 5." << endl;
             return 2;
         } else if (!(100 <= target && target <= 999)) {
             cerr << "Target must be between 100 & 999." << endl;
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
         nums = vm["numbers"].as<vector<int>>();
 
         if (nums.size() != 5) {
-            cerr << "Incorrect ammount of numbers entered! There must be 5." << endl;
+            cerr << "Incorrect amount of numbers entered! There must be 5." << endl;
             return 2;
         }
 
