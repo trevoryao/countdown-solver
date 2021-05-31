@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <boost/program_options.hpp>
 #include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <random>
@@ -32,7 +33,8 @@ int generateTarget() {
     int target;
     
     cout << "CECIL is generating target....." << endl;
-    for (int i = 0; i < 5; ++i) target = (rand() % 999) + 100;
+    for (int i = 0; i < 5; ++i)
+        target = (rand() % 899) + 100;
     cout << "Your target is " << target << "." << endl;
 
     return target;
@@ -82,7 +84,6 @@ int main(int argc, char *argv[]) {
         ("biguns,b", value<int>(), "# of biguns (must be 5 - littluns)")
         ("littluns,l", value<int>(), "# of littluns (must be 5 - biguns)")
         ("json,j", "print in json format")
-        ("shortest,s", "only print the shortest solution")
         ("out,o", value<string>(), "output to file");
 
     variables_map vm;
@@ -104,14 +105,14 @@ int main(int argc, char *argv[]) {
     
     if (vm.count("json"))
         config.pretty_print = false;
-    if (vm.count("s"))
-        config.shortest = true;
     if (vm.count("out"))
         config.filename = vm["out"].as<string>();
 
     // run command
     int target;
     vector<int> nums;
+
+    srand(static_cast<unsigned>(time(0)));
 
     if (vm.count("target") && vm.count("numbers")) {
         target = vm["target"].as<int>();
@@ -157,6 +158,8 @@ int main(int argc, char *argv[]) {
     Problem problem{nums, target, config};
     int solved;
 
+    cout << "Looking for solutions....." << endl;
+    
     if (config.filename.empty()) {
         solved = problem.solve(cout);
     } else {
@@ -164,6 +167,8 @@ int main(int argc, char *argv[]) {
         solved = problem.solve(ofs);
     }
 
+    if (!config.pretty_print) cout << endl;
+    
     if (solved) {
         cout << "Summary: Found " << solved << " solutions." << endl;
     } else {

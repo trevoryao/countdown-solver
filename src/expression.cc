@@ -13,7 +13,6 @@ ostream &Expression::output_pretty(ostream &out) const {
 }
 
 ostream &Expression::output_json(ostream &out) const {
-    expression_root->output_json(out);
-    return out << endl;
+    return expression_root->output_json(out);
 }
 }
