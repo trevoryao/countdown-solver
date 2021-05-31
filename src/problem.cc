@@ -45,19 +45,12 @@ int Problem::solve(ostream &os) {
     stringstream ss;
     
     for (int k = 1; k <= numbers.size(); ++k) {
-        os << "k=" << k << endl;
         do {
             // something with first k numbers
             // generate k - 1 operators
             Generator gen{ops, static_cast<size_t>(k - 1)};
             do {
                 try {
-                    // os << "numbers = ";
-                    // for (int i = 0; i < k; ++i) os << numbers[i] << " ";
-                    // os << endl;
-                    // os << "ops = ";
-                    // for (auto &n : gen.get_word()) os << n << " ";
-                    // os << endl;
                     Expression exp{numbers.begin(), numbers.begin() + k, gen.get_word().begin(), gen.get_word().end()};
 
                     if (exp.is_solution(target)) {
