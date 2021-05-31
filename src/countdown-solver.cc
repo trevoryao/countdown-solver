@@ -82,7 +82,6 @@ int main(int argc, char *argv[]) {
         ("biguns,b", value<int>(), "# of biguns (must be 5 - littluns)")
         ("littluns,l", value<int>(), "# of littluns (must be 5 - biguns)")
         ("json,j", "print in json format")
-        ("shortest,s", "only print the shortest solution")
         ("out,o", value<string>(), "output to file");
 
     variables_map vm;
@@ -104,8 +103,6 @@ int main(int argc, char *argv[]) {
     
     if (vm.count("json"))
         config.pretty_print = false;
-    if (vm.count("s"))
-        config.shortest = true;
     if (vm.count("out"))
         config.filename = vm["out"].as<string>();
 
@@ -157,6 +154,8 @@ int main(int argc, char *argv[]) {
     Problem problem{nums, target, config};
     int solved;
 
+    cout << "Looking for solutions...." << endl;
+    
     if (config.filename.empty()) {
         solved = problem.solve(cout);
     } else {

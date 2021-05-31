@@ -5,7 +5,7 @@
 
 namespace Countdown {
 struct Config {
-    bool pretty_print, shortest;
+    bool pretty_print;
     std::string filename;
 
     Config();
