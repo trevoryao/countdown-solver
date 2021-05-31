@@ -8,10 +8,12 @@ bool Expression::is_solution(int target) {
 }
 
 ostream &Expression::output_pretty(ostream &out) const {
-    return expression_root->output_pretty(out);
+    expression_root->output_pretty(out);
+    return out << endl;
 }
 
 ostream &Expression::output_json(ostream &out) const {
-    return expression_root->output_json(out);
+    expression_root->output_json(out);
+    return out << endl;
 }
 }

@@ -43,8 +43,6 @@ Expression::Expression(const NumsIt nums_begin, const NumsIt nums_end,
     auto nums_it = nums.begin();
     auto ops_it = ops.begin();
     while (ops_it != ops.end()) {
-        int nums_dis = std::distance(nums.begin(), nums_it);
-        int ops_dis = std::distance(ops.begin(), ops_it);
         if (*ops_it == '*' || *ops_it == '/') {
             auto nums_right_it = nums_it;
             ++nums_right_it;
@@ -75,9 +73,6 @@ Expression::Expression(const NumsIt nums_begin, const NumsIt nums_end,
     nums_it = nums.begin();
     ops_it = ops.begin();
     while (ops_it != ops.end()) {
-        int nums_dis = std::distance(nums.begin(), nums_it);
-        int ops_dis = std::distance(ops.begin(), ops_it);
-        
         auto nums_right_it = nums_it;
         ++nums_right_it;
 

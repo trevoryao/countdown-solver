@@ -6,10 +6,10 @@
             "type": "lldb",
             "request": "launch",
             "program": "${cwd}/countdown-solver",
-            "args":[],
+            "args":["-b", "2", "-l", "4"],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Make Program",
-            "postDebugTask": "Delete Files",
+            "preLaunchTask": "Make Program"
+            //"postDebugTask": "Delete Files",
         }
     ]
 }

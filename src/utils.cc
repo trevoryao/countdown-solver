@@ -14,15 +14,18 @@ Generator::Generator(vector<char> &&alph, size_t k) : alph{move(alph)},
 const vector<char> &Generator::get_word() const { return curr_word; }
 
 bool Generator::next_word() {
+    if (curr_word.empty()) return false;
+    
     if (j < alph.size()) {
         curr_word[i] = alph[j++];
         ++word_hash[i];
     } else if (i) {
-        while (i && word_hash[i] == alph.size() - 1) {
+        while (word_hash[i] == alph.size() - 1) {
             curr_word[i] = alph[0];
             word_hash[i] = 0;
             --i;
         }
+        if (i == -1) return false;
         curr_word[i] = alph[++word_hash[i]];
         i = curr_word.size() - 1;
         j = 1;
