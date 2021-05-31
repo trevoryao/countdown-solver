@@ -163,6 +163,8 @@ int main(int argc, char *argv[]) {
         solved = problem.solve(ofs);
     }
 
+    if (!config.pretty_print) cout << endl;
+    
     if (solved) {
         cout << "Summary: Found " << solved << " solutions." << endl;
     } else {

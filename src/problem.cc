@@ -21,6 +21,7 @@ Problem::Problem(const vector<int> &numbers, int target, Config config) :
 
 int Problem::solve(ostream &os) {
     vector<future<int>> futures;
+    if (!config.pretty_print) os << '[';
 
     for (int k = 1; k <= numbers.size(); ++k) {
         futures.emplace_back(async([this, &os, k] {
@@ -33,6 +34,7 @@ int Problem::solve(ostream &os) {
 
     int solved = 0;
     for (auto &f : futures) solved += f.get();
+    if (!config.pretty_print) os << ']';
     return solved;
 }
 
@@ -45,13 +47,18 @@ int Problem::solve_k(ostream &os, int k) {
         // generate k - 1 operators
         Generator gen{ops, static_cast<size_t>(k - 1)};
         do {
-            try { // current issue with k = 1
+            try {
                 Expression exp{thread_numbs.begin(), thread_numbs.begin() + k,
                     gen.get_word().begin(), gen.get_word().end()};
 
                 if (exp.is_solution(target)) {
                     if (config.pretty_print) exp.output_pretty(os);
-                    else exp.output_json(os);
+                    else {
+                        if (solved) os << ',';
+                        os << '"';
+                        exp.output_json(os);
+                        os << '"';
+                    }
                     ++solved;
                 }
             }
