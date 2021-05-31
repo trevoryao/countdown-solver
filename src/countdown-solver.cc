@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
     Problem problem{nums, target, config};
     int solved;
 
-    cout << "Looking for solutions...." << endl;
+    cout << "Looking for solutions....." << endl;
     
     if (config.filename.empty()) {
         solved = problem.solve(cout);
