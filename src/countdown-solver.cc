@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
         target = vm["target"].as<int>();
         nums = vm["numbers"].as<vector<int>>();
 
-        if (nums.size() != 5) {
+        if (nums.size() != 6) {
             cerr << "Incorrect amount of numbers entered! There must be 5." << endl;
             return 2;
         } else if (!(100 <= target && target <= 999)) {
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
     } else if (vm.count("numbers")) {
         nums = vm["numbers"].as<vector<int>>();
 
-        if (nums.size() != 5) {
+        if (nums.size() != 6) {
             cerr << "Incorrect amount of numbers entered! There must be 5." << endl;
             return 2;
         }
