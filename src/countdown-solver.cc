@@ -20,9 +20,7 @@
 #include <vector>
 
 #include "config.h"
-#include "expression.h"
 #include "problem.h"
-#include "utils.h"
 
 using namespace std;
 

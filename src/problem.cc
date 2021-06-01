@@ -40,32 +40,40 @@ int Problem::solve(ostream &os) {
 
 int Problem::solve_k(ostream &os, int k) {
     int solved = 0;
-
     vector<int> thread_numbs{numbers};
 
     do {
-        // generate k - 1 operators
+        // possible splitting : 
+        // generate (k-2) ops and tag on first op for each
         Generator gen{ops, static_cast<size_t>(k - 1)};
         do {
-            try {
-                Expression exp{thread_numbs.begin(), thread_numbs.begin() + k,
-                    gen.get_word().begin(), gen.get_word().end()};
+            // os << "current numbs:";
+            // for (auto it = thread_numbs.begin(); it != thread_numbs.begin() + k; ++it) os << *it << " ";
+            // os << endl << "current ops:";
+            // for (auto &n : gen.get_word()) os << n << " ";
+            // os << endl;
+            
+            auto exp_nodes = create_expressions(thread_numbs.begin(), thread_numbs.begin() + k,
+                gen.get_word().begin(), gen.get_word().end());
 
-                if (exp.is_solution(target)) {
-                    if (config.pretty_print) exp.output_pretty(os);
-                    else {
-                        if (solved) os << ',';
-                        os << '"';
-                        exp.output_json(os);
-                        os << '"';
+            for (auto &exp_node : exp_nodes) {
+                Expression exp{move(exp_node)};
+
+                try {
+                    if (exp.is_solution(target)) {
+                        if (config.pretty_print) exp.output_pretty(os);
+                        else {
+                            if (solved) os << ',';
+                            os << '"';
+                            exp.output_json(os);
+                            os << '"';
+                        }
+                        ++solved;
                     }
-                    ++solved;
-                }
+                } catch (ExpressionException) { }
             }
-            catch (ExpressionDivException) { }
         } while (gen.next_word());
     } while (next_k_permutation(thread_numbs.begin(), thread_numbs.end(), k));
-
     return solved;
 }
 }
