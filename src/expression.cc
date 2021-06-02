@@ -3,6 +3,8 @@
 using namespace std;
 
 namespace Countdown {
+Expression::Expression(unique_ptr<ExpressionNode> node) : expression_root{move(node)} { }
+
 bool Expression::is_solution(int target) {
     return expression_root->evaluate() == target;
 }

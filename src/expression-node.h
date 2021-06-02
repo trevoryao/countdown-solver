@@ -5,6 +5,9 @@
 #include <memory>
 
 namespace Countdown {
+class ExpressionException { };
+class ExpressionDivException : public ExpressionException { };
+
 class ExpressionNode {
 protected:
     std::unique_ptr<ExpressionNode> left;

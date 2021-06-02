@@ -7,20 +7,21 @@
 #include <list>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "int-node.h"
 #include "op-node.h"
 
 namespace Countdown {
-class ExpressionDivException {};
-class ExpressionException {};
+template<class NumsIt, class OpsIt> std::vector<std::unique_ptr<ExpressionNode>>
+create_expressions(const NumsIt nums_begin, const NumsIt nums_end,
+    const OpsIt ops_begin, const OpsIt ops_end);
 
 class Expression {
 private:
     std::unique_ptr<ExpressionNode> expression_root;
 public:
-    template<class NumsIt, class OpsIt> // assuming bidirectional
-    Expression(const NumsIt nums_begin, const NumsIt nums_end, const OpsIt ops_begin, const OpsIt ops_end);
+    Expression(std::unique_ptr<ExpressionNode> node);
 
     bool is_solution(int target);
 
@@ -28,74 +29,38 @@ public:
     std::ostream &output_json(std::ostream &out) const;
 };
 
-template<class NumsIt, class OpsIt>
-Expression::Expression(const NumsIt nums_begin, const NumsIt nums_end,
+template<class NumsIt, class OpsIt> std::vector<std::unique_ptr<ExpressionNode>>
+create_expressions(const NumsIt nums_begin, const NumsIt nums_end,
     const OpsIt ops_begin, const OpsIt ops_end) {
-    std::list<std::unique_ptr<ExpressionNode>> nums;
-    std::list<char> ops;
+    std::vector<std::unique_ptr<ExpressionNode>> result;
 
-    for (auto nums_it = nums_begin; nums_it != nums_end; ++nums_it) {
-        nums.emplace_back(std::make_unique<IntNode>(*nums_it));
+    if (nums_begin + 1 == nums_end) {
+        result.emplace_back(std::move(std::make_unique<IntNode>(*nums_begin)));
+        return result;
     }
 
-    std::copy(ops_begin, ops_end, std::back_inserter(ops));
+    auto nums_it = nums_begin + 1;
+    auto ops_it = ops_begin + 1;
 
-    auto nums_it = nums.begin();
-    auto ops_it = ops.begin();
-    while (ops_it != ops.end()) {
-        if (*ops_it == '*' || *ops_it == '/') {
-            auto nums_right_it = nums_it;
-            ++nums_right_it;
-            
-            if (*ops_it == '/') {
-                if ((*nums_it)->evaluate() % (*nums_right_it)->evaluate()) {
-                    throw ExpressionDivException{};
-                }
+    while (nums_it != nums_end) {
+        auto left_exps = create_expressions(nums_begin, nums_it, ops_begin, ops_it);
+        auto right_exps = create_expressions(nums_it, nums_end, ops_it, ops_end);
+
+        for (auto &left : left_exps) {
+            for (auto &right : right_exps) {
+                result.emplace_back(std::move(std::make_unique<OpNode>(
+                    *(ops_it - 1),
+                    std::move(left),
+                    std::move(right)
+                )));
             }
-
-            ExpressionNode *nums_left = nums_it->release();
-            ExpressionNode *nums_right = nums_right_it->release();
-
-            ++nums_right_it;
-            nums_it = nums.erase(nums_it, nums_right_it);
-
-            nums_it = nums.insert(nums_it, std::make_unique<OpNode>(*ops_it,
-                std::unique_ptr<ExpressionNode>{nums_left},
-                std::unique_ptr<ExpressionNode>{nums_right}
-            ));
-            ops_it = ops.erase(ops_it);
-        } else {
-            ++ops_it;
-            ++nums_it;
         }
+
+        ++nums_it;
+        ++ops_it;
     }
 
-    nums_it = nums.begin();
-    ops_it = ops.begin();
-    while (ops_it != ops.end()) {
-        auto nums_right_it = nums_it;
-        ++nums_right_it;
-
-        ExpressionNode *nums_left = nums_it->release();
-        ExpressionNode *nums_right = nums_right_it->release();
-
-        ++nums_right_it;
-        nums_it = nums.erase(nums_it, nums_right_it);
-
-        nums_it = nums.insert(nums_it, std::make_unique<OpNode>(*ops_it,
-            std::unique_ptr<ExpressionNode>{nums_left},
-            std::unique_ptr<ExpressionNode>{nums_right}
-        ));
-        ops_it = ops.erase(ops_it);
-    }
-
-    if (nums.size() == 1 && ops.empty()) {
-        ExpressionNode *node_ptr = nums.begin()->release();
-        nums.erase(nums.begin());
-        expression_root = std::unique_ptr<ExpressionNode>{node_ptr};
-    } else {
-        throw ExpressionException{};
-    }
+    return result;
 }
 }
 
