@@ -34,9 +34,9 @@ ostream &OpNode::output_pretty(ostream &out) const {
 
 ostream &OpNode::output_json(ostream &out) const {
     out << "(";
-    left->output_pretty(out);
+    left->output_json(out);
     out << op;
-    right->output_pretty(out);
+    right->output_json(out);
     out << ")";
     return out;
 }
