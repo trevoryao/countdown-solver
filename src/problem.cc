@@ -29,18 +29,18 @@ int Problem::solve(ostream &os) {
     // k == 1 && k == 2
     futures.emplace_back(async([this, &os, &solved] {
         stringstream ss;
-        int solved = solve_k(ss, 1, solved) + solve_k(ss, 2, solved);
+        int local_solved = solve_k(ss, 1, solved) + solve_k(ss, 2, solved);
         os << ss.str();
-        return solved;
+        return local_solved;
     }));
 
     // k == 3
     for (int k = 3; k <= 4; ++k) {
         futures.emplace_back(async([this, &os, k, &solved] {
             stringstream ss;
-            int solved = solve_k(ss, k, solved);
+            int local_solved = solve_k(ss, k, solved);
             os << ss.str();
-            return solved;
+            return local_solved;
         }));
     }
 
@@ -49,9 +49,9 @@ int Problem::solve(ostream &os) {
         for (auto &op : ops) {
             futures.emplace_back(async([this, &os, k, op, &solved] {
                 stringstream ss;
-                int solved = solve_k_large(ss, k, op, solved);
+                int local_solved = solve_k_large(ss, k, op, solved);
                 os << ss.str();
-                return solved;
+                return local_solved;
             }));
         }
     }
