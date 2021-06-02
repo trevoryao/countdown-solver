@@ -77,23 +77,24 @@ int main(int argc, char *argv[]) {
     options_description desc{"Options"};
     desc.add_options()
         ("help,h", "Help Screen")
+        ("json,j", "print in json format")
+        ("out,o", value<string>(), "output to file")
         ("target,t", value<int>(),  "Target")
         ("numbers,n", value<vector<int>>()->multitoken(), "5 numbers")
         ("biguns,b", value<int>(), "# of biguns (must be 5 - littluns)")
-        ("littluns,l", value<int>(), "# of littluns (must be 5 - biguns)")
-        ("json,j", "print in json format")
-        ("out,o", value<string>(), "output to file");
+        ("littluns,l", value<int>(), "# of littluns (must be 5 - biguns)");
 
     variables_map vm;
     store(parse_command_line(argc, argv, desc), vm);
     notify(vm);
 
     if (vm.count("help")) {
-        cout << "Welcome to the Countdown Numbers Game solver!" << endl;
+        cout << "Welcome to the Countdown Numbers Game solver!" << endl << endl;
+        cout << "How to use:" << endl;
         cout << "countdown-solver [options] -t <target> -n <5 numbers>" << endl;
         cout << "countdown-solver [options] -n <5 numbers> (CECIL will generate target)" << endl;
         cout << "countdown-solver [options] -t <target> -b <# of big'uns> -l <# of little ones>" << endl;
-        cout << "countdown-solver [options] -b <# of big'uns> -l <# of little ones> (CECIL will generate)" << endl;
+        cout << "countdown-solver [options] -b <# of big'uns> -l <# of little ones> (CECIL will generate)" << endl << endl;
         cout << desc << endl;
         return 0;
     }
